@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -32,6 +33,8 @@ public class OrderResponse {
     String shippingAddress;
 
     String paymentMethod;
+
+    LocalDateTime createdAt;
 
     List<OrderDetailResponse> items;
 }
