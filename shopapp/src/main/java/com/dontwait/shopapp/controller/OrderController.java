@@ -25,16 +25,16 @@ public class OrderController {
                 .build();
     }
 
-    @PutMapping("/{userId}")
-    public ApiResponse<String> updateOrder(@Valid @PathVariable Long userId,
+    @PutMapping("/{orderId}")
+    public ApiResponse<String> updateOrder(@Valid @PathVariable Long orderId,
                                            @RequestBody OrderUpdateRequest request) {
         return ApiResponse.<String>builder()
                 .message("Update successfully")
                 .build();
     }
 
-    @DeleteMapping("/{userid}")
-    public ApiResponse<String> deleteOrder(@Valid @PathVariable Long userId) {
+    @DeleteMapping("/{orderId}")
+    public ApiResponse<String> deleteOrder(@Valid @PathVariable Long orderId) {
         //TODO: delete softly
         return ApiResponse.<String>builder()
                 .message("delete successfully")
