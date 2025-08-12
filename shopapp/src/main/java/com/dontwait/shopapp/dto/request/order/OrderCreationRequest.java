@@ -1,5 +1,6 @@
 package com.dontwait.shopapp.dto.request.order;
 
+import com.dontwait.shopapp.dto.request.order_detail.OrderDetailCreationRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +20,7 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderCreationRequest {
 
-    @Min(value
-    = 1, message = "USER_ID_MUST_BE_GREATER_THAN_1")
+    @Min(value = 1, message = "USER_ID_MUST_BE_GREATER_THAN_1")
     Long userId;
 
     String orderFullName;
@@ -43,5 +44,7 @@ public class OrderCreationRequest {
     String shippingAddress;
 
     String paymentMethod;
+
+    List<OrderDetailCreationRequest> orderDetails;
 
 }

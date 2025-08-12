@@ -9,6 +9,7 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
+    @Mapping(target = "isActive", constant = "1")
     Product toProduct(ProductCreationRequest request, Category category);
 
     @Mapping(target = "productCategory", source = "category.categoryName")

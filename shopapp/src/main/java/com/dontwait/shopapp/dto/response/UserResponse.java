@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserResponse {
     String fullName;
     String phoneNumber;
-    String address;
+    String userAddress;
     Date dateOfBirth;
     Integer facebookAccountId;
     Integer googleAccountId;

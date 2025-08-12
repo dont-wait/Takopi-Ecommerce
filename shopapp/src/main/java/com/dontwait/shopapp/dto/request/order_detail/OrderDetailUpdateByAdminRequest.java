@@ -13,17 +13,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderDetailCreationRequest {
-
-    @Min(value = 1, message = "PRODUCT_ID_MUST_BE_GREATER_THAN_1")
-    Long productId;
-
+public class OrderDetailUpdateByAdminRequest {
     @Min(value = 0, message = "PRODUCT_PRICE_MUST_BE_GREATER_THAN_0")
     BigDecimal price;
-
     @Min(value = 1, message = "PRODUCT_NUMBER_MUST_BE_GREATER_THAN_1")
     Integer numberOfProducts;
-
     @Min(value = 0, message = "PRODUCT_TOTAL_MONEY_MUST_BE_GREATER_THAN_0")
     BigDecimal totalMoney;
     String color;

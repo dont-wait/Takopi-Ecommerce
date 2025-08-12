@@ -23,7 +23,7 @@ public class Order extends BaseEntity{
     Long orderId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     User user;
 
     @Column(name = "order_fullname", length = 100)
@@ -65,9 +65,11 @@ public class Order extends BaseEntity{
     @Column(name = "payment_method")
     String paymentMethod;
 
-    @Column(name = "active", columnDefinition = "TINYINT(1)")
-    Boolean active;//thuộc về admin
+    @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    Integer active = 1;//thuộc về admin
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "order",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    List<OrderDetail> orderDetails;
 }
