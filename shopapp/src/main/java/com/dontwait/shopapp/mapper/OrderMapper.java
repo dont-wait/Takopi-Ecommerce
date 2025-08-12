@@ -15,6 +15,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
+    @Mapping(target = "user")
     Order toOrder(OrderCreationRequest request, User user);
 
     OrderDetail toOrderDetail(OrderDetailCreationRequest request, Product product);

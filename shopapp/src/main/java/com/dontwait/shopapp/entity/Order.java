@@ -23,7 +23,7 @@ public class Order extends BaseEntity{
     Long orderId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     User user;
 
     @Column(name = "order_fullname", length = 100)
