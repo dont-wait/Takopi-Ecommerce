@@ -45,6 +45,6 @@ public class OrderCreationRequest {
 
     String paymentMethod;
 
-    List<OrderDetailCreationRequest> items;
+    List<OrderDetailCreationRequest> orderDetails;
 
 }

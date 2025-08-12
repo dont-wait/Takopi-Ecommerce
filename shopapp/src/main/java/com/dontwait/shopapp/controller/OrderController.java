@@ -3,16 +3,26 @@ package com.dontwait.shopapp.controller;
 import com.dontwait.shopapp.dto.request.order.OrderCreationRequest;
 import com.dontwait.shopapp.dto.request.order.OrderUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
+import com.dontwait.shopapp.dto.response.OrderResponse;
+import com.dontwait.shopapp.service.OrderService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderController {
 
+    OrderService orderService;
+
     @PostMapping
-    public ApiResponse<String> createOrder(@Valid @RequestBody OrderCreationRequest request) {
-        return ApiResponse.<String>builder()
+    public ApiResponse<OrderResponse> createOrder(@Valid @RequestBody OrderCreationRequest request) {
+        return ApiResponse.<OrderResponse>builder()
+                .result(orderService.createOrder(request))
                 .message("Create order successfully")
                 .build();
     }

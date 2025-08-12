@@ -14,9 +14,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailCreationRequest {
-    //Check existed in service
-    @Min(value = 1, message = "ORDER_ID_MUST_BE_GREATER_THAN_1")
-    Long orderId;
 
     @Min(value = 1, message = "PRODUCT_ID_MUST_BE_GREATER_THAN_1")
     Long productId;

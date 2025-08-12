@@ -36,5 +36,5 @@ public class OrderResponse {
 
     LocalDateTime createdAt;
 
-    List<OrderDetailResponse> items;
+    List<OrderDetailResponse> orderDetails;
 }
