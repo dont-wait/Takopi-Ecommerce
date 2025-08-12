@@ -13,7 +13,7 @@ public interface UserMapper {
     @Mapping(target = "userRole", source = "role.roleName")
     UserResponse toUserResponse(User user);
 
-
+    @Mapping(target = "isActive", constant = "1")
     User toUser(UserRegisterRequest request, Role role);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,

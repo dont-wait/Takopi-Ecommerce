@@ -35,8 +35,8 @@ public class User extends BaseEntity{
     @Column(name = "password", nullable = false, length = 100)
     String password;
 
-    @Column(name = "is_active", columnDefinition = "TINYINT(1)")
-    Integer isActive;
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    Integer isActive = 1;
 
     @Column(name = "facebook_account_id", columnDefinition = "INT(0)")
     Integer facebookAccountId;
