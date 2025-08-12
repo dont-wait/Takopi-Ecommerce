@@ -29,8 +29,8 @@ public class User extends BaseEntity{
     @Column(name = "date_of_birth")
     Date dateOfBirth;
 
-    @Column(name = "address", length = 200)
-    String address;
+    @Column(name = "user_address", length = 200)
+    String userAddress;
 
     @Column(name = "password", nullable = false, length = 100)
     String password;

@@ -24,7 +24,8 @@ public class Product extends BaseEntity{
     @Column(name = "product_name", nullable = false, length = 350)
     String productName;
 
-    BigDecimal price;
+    @Column(name = "product_price", nullable = false)
+    BigDecimal productPrice;
 
     @Column(name = "product_thumbnail", nullable = false, length = 350)
     String thumbnail;
@@ -39,6 +40,9 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<ProductImage> productImages;
 
-    @Column(name = "is_active", columnDefinition = "TINYINT(1)")
-    Integer isActive;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<OrderDetail> orderDetails;
+
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    Integer isActive = 1;
 }

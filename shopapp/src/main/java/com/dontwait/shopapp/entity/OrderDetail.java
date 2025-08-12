@@ -22,8 +22,9 @@ public class OrderDetail {
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     Order order;
 
-    @Column(name = "product_id", nullable = false)
-    Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    Product product;
 
     @Column(name = "price", nullable = false)
     BigDecimal price;

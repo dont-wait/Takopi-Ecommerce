@@ -65,8 +65,8 @@ public class Order extends BaseEntity{
     @Column(name = "payment_method")
     String paymentMethod;
 
-    @Column(name = "active", columnDefinition = "TINYINT(1)")
-    Boolean active;//thuộc về admin
+    @Column(name = "active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    Integer active = 1;//thuộc về admin
 
     @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL,
