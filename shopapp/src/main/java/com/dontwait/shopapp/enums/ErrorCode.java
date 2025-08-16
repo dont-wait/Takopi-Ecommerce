@@ -41,6 +41,7 @@ public enum ErrorCode {
     CATEGORY_NAME_EXISTED(1003, "Category name existed", HttpStatus.CONFLICT),
 
     PRODUCT_ID_NOT_FOUND(1004, "Product id not found", HttpStatus.NOT_FOUND),
+    ORDER_ID_NOT_FOUND(1004, "Order id not found", HttpStatus.NOT_FOUND),
     FULLNAME_NOT_FOUND(1004, "Full name not found", HttpStatus.NOT_FOUND),
     CATEGORY_ID_NOT_FOUND(1004, "Category id not found", HttpStatus.NOT_FOUND),
     ROLE_ID_NOT_FOUND(1004, "Role id not found", HttpStatus.NOT_FOUND),

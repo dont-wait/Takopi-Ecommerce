@@ -15,11 +15,19 @@ import com.dontwait.shopapp.repository.OrderRepository;
 import com.dontwait.shopapp.repository.ProductRepository;
 import com.dontwait.shopapp.repository.UserRepository;
 import com.dontwait.shopapp.service.OrderService;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,14 +65,49 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse getOrderById(Long orderId) {
-        return null;
+        Order existingOrder = orderRepository.findByOrderId(orderId)
+                .orElseThrow(() ->
+                        new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+        return orderMapper.toOrderResponse(existingOrder);
     }
 
     @Override
-    public List<OrderResponse> getOrdersByUserId(Long userId) {
-        return orderRepository.findByUserUserId(userId).stream()
+    public List<OrderResponse> getOrders(Pageable pageable,
+                                         BigInteger userId,
+                                         String status,
+                                         String keyword) {
+        Specification<Order> spec = Specification.where(null);
+        if(userId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("user").get("userId"), userId));
+        }
+
+        if(status != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+        }
+
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, cb) -> {
+                List<Predicate> keyWordPredicates = new ArrayList<>();
+                // filter trên trường của Order
+                keyWordPredicates.add(cb.like(root.get("orderFullName"), "%" + keyword + "%"));
+                keyWordPredicates.add(cb.like(root.get("trackingNumber"), "%" + keyword + "%"));
+
+                // join đến OrderDetail và Product để filter productName
+                Join<Order, OrderDetail> detailJoin = root.join("orderDetails", JoinType.LEFT);
+                Join<OrderDetail, Product> productJoin = detailJoin.join("product", JoinType.LEFT);
+                keyWordPredicates.add(cb.like(productJoin.get("productName"), "%" + keyword + "%"));
+
+                // combine tất cả điều kiện bằng OR
+                return cb.or(keyWordPredicates.toArray(new Predicate[0]));
+            });
+        }
+
+
+        return orderRepository.findAll(spec, pageable)
+                .stream()
                 .map(orderMapper::toOrderResponse)
                 .toList();
+
     }
 
     @Override

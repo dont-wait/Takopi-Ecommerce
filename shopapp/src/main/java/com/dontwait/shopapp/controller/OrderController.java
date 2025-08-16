@@ -33,22 +33,32 @@ public class OrderController {
                 .build();
     }
 
+    @GetMapping ("{orderId}")
+    public ApiResponse<OrderResponse> getOrderById(@PathVariable Long orderId) {
+        return ApiResponse.<OrderResponse>builder()
+                .result(orderService.getOrderById(orderId))
+                .message("Get order successfully")
+                .build();
+    }
+
     //VIP
-    @GetMapping
+    //TODO: handle Status
+    @GetMapping("/search")
     public ApiResponse<List<OrderResponse>> getOrders(
             @RequestParam(name= "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "limit", defaultValue = "10") Integer limit,
+            @RequestParam(name = "limit", defaultValue = "5") Integer limit,
             @RequestParam(name = "sort", defaultValue = "orderId") String sort,
             @RequestParam(name = "order", defaultValue = "asc") String order,
-            @RequestParam(name = "keyword") String keyword,
-            @RequestParam(name = "userId") BigInteger userId,
-            @RequestParam(name = "status") String status
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "userId", required = false) BigInteger userId,
+            @RequestParam(name = "status", required = false) String status
             ) {
-        Sort.Direction direction = order.equalsIgnoreCase(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort.Direction direction = order.equalsIgnoreCase(("asc")) ?
+                Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, limit, Sort.by(direction, sort));
         return ApiResponse.<List<OrderResponse>>builder()
                 .message("Get all orders successfully")
-                //.result()
+                .result(orderService.getOrders(pageable, userId, status, keyword))
                 .build();
     }
 
