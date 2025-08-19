@@ -6,9 +6,7 @@ import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
-import com.dontwait.shopapp.entity.Category;
-import com.dontwait.shopapp.entity.Product;
-import com.dontwait.shopapp.entity.ProductImage;
+import com.dontwait.shopapp.entity.*;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.mapper.ProductImageMapper;
@@ -18,6 +16,9 @@ import com.dontwait.shopapp.repository.ProductImageRepository;
 import com.dontwait.shopapp.repository.ProductRepository;
 import com.dontwait.shopapp.service.ProductService;
 import com.dontwait.shopapp.util.FileUtil;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -60,9 +61,20 @@ public class ProductServiceImpl implements ProductService {
             );
         }
 
-        if(keyword != null && !keyword.isEmpty()) {
-            spec = spec.and((root, query, cb)
-                    -> cb.like(root.get("productName"), "%" + keyword + "%"));
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, cb) -> {
+                List<Predicate> keyWordPredicates = new ArrayList<>();
+                // filter trên trường của Order
+                keyWordPredicates.add(cb.like(root.get("productName"), "%" + keyword + "%"));
+                keyWordPredicates.add(cb.like(root.get("productDescription"), "%" + keyword + "%"));
+
+                // join đến Category và Product để filter categoryName
+                Join<Product, Category> categoryJoin = root.join("category", JoinType.LEFT);
+                keyWordPredicates.add(cb.like(categoryJoin.get("categoryName"), "%" + keyword + "%"));
+
+                // combine tất cả điều kiện bằng OR
+                return cb.or(keyWordPredicates.toArray(new Predicate[0]));
+            });
         }
 
         return productRepository.findAll(spec, pageable).stream()

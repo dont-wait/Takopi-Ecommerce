@@ -1,16 +1,11 @@
 package com.dontwait.shopapp.controller;
 
 import com.dontwait.shopapp.dto.request.product.ProductCreationRequest;
-import com.dontwait.shopapp.dto.request.product.ProductImageRequest;
 import com.dontwait.shopapp.dto.request.product.ProductUpdateRequest;
 import com.dontwait.shopapp.dto.response.ApiResponse;
 import com.dontwait.shopapp.dto.response.ProductImageResponse;
 import com.dontwait.shopapp.dto.response.ProductResponse;
-import com.dontwait.shopapp.entity.Product;
-import com.dontwait.shopapp.enums.ErrorCode;
-import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.service.ProductService;
-import com.dontwait.shopapp.util.FileUtil;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
