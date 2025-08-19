@@ -11,6 +11,7 @@ import com.dontwait.shopapp.mapper.UserMapper;
 import com.dontwait.shopapp.repository.RoleRepository;
 import com.dontwait.shopapp.repository.UserRepository;
 import com.dontwait.shopapp.service.UserService;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -60,7 +63,12 @@ public class UserServiceImpl implements UserService {
         -> cb.equal(root.get("role").get("roleId"), roleId));
         }
         if(keyword != null && !keyword.isEmpty()) {
-            spec = spec.and((root, query, cb) -> cb.like(root.get("fullName"), "%" + keyword + "%"));
+            spec = spec.and((root, query, cb) -> {
+                List<Predicate> keywordPredicates = new ArrayList<>();
+                keywordPredicates.add(cb.like(root.get("fullName"), "%" + keyword + "%"));
+                keywordPredicates.add(cb.like(root.get("phoneNumber"), "%" + keyword + "%"));
+                return cb.or(keywordPredicates.toArray(new Predicate[0]));
+            });
         }
 
         return userRepository.findAll(spec, pageable).stream()
