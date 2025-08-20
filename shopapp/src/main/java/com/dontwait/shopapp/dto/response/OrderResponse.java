@@ -16,6 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
+
+    Long orderId;
+
     String orderFullName;
 
     String orderEmail;
