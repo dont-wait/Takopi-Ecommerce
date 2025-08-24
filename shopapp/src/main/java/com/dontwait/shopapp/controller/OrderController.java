@@ -74,6 +74,7 @@ public class OrderController {
     @DeleteMapping("/{orderId}")
     public ApiResponse<String> deleteOrder(@Valid @PathVariable Long orderId) {
         //TODO: delete softly
+        orderService.deleteOrder(orderId);
         return ApiResponse.<String>builder()
                 .message("delete successfully")
                 .build();

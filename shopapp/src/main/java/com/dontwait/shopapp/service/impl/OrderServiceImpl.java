@@ -66,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponse getOrderById(Long orderId) {
         Order existingOrder = orderRepository.findByOrderId(orderId)
+                .filter(order -> order.getActive() == 1)
                 .orElseThrow(() ->
                         new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
         return orderMapper.toOrderResponse(existingOrder);
@@ -105,6 +106,7 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findAll(spec, pageable)
                 .stream()
+                .filter(order -> order.getActive() == 1)
                 .map(orderMapper::toOrderResponse)
                 .toList();
 
@@ -112,7 +114,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long orderId) {
-
+        Order existingORder = orderRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+        existingORder.setActive(0);
+        orderRepository.save(existingORder);
     }
 
     @Override
