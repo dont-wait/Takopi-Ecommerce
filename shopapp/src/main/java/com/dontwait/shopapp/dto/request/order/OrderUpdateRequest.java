@@ -1,5 +1,7 @@
 package com.dontwait.shopapp.dto.request.order;
 
+import com.dontwait.shopapp.dto.request.order_detail.OrderDetailUpdateRequest;
+import com.dontwait.shopapp.entity.OrderDetail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -39,4 +42,6 @@ public class OrderUpdateRequest {
     String shippingAddress;
 
     String paymentMethod;
+
+    List<OrderDetailUpdateRequest> orderDetails;
 }

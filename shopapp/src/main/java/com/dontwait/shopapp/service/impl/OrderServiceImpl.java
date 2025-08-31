@@ -3,10 +3,7 @@ package com.dontwait.shopapp.service.impl;
 import com.dontwait.shopapp.dto.request.order.OrderCreationRequest;
 import com.dontwait.shopapp.dto.request.order.OrderUpdateRequest;
 import com.dontwait.shopapp.dto.response.OrderResponse;
-import com.dontwait.shopapp.entity.Order;
-import com.dontwait.shopapp.entity.OrderDetail;
-import com.dontwait.shopapp.entity.Product;
-import com.dontwait.shopapp.entity.User;
+import com.dontwait.shopapp.entity.*;
 import com.dontwait.shopapp.enums.ErrorCode;
 import com.dontwait.shopapp.exception.AppException;
 import com.dontwait.shopapp.mapper.OrderMapper;
@@ -58,6 +55,8 @@ public class OrderServiceImpl implements OrderService {
 
         Order newOrder = orderMapper.toOrder(request, userExisting);
         newOrder.setOrderDetails(details);
+        newOrder.setOrderStatus(OrderStatus.PENDING);
+
         details.forEach(detail -> detail.setOrder(newOrder));
 
         return orderMapper.toOrderResponse(orderRepository.save(newOrder));
@@ -121,7 +120,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    //TODO: Implement check role each field for update
     public OrderResponse updateOrder(Long orderId, OrderUpdateRequest request) {
+        Order orderExisting = orderRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+
+
         return null;
     }
 }

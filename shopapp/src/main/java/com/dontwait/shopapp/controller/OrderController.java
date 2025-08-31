@@ -42,7 +42,6 @@ public class OrderController {
     }
 
     //VIP
-    //TODO: handle Status
     @GetMapping("/search")
     public ApiResponse<List<OrderResponse>> getOrders(
             @RequestParam(name= "page", defaultValue = "0") Integer page,
