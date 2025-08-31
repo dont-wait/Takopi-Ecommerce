@@ -36,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     ProductRepository productRepository;
     OrderMapper orderMapper;
     UserRepository userRepository;
+    OrderDetailRepository orderDetailRepository;
 
     @Override
     public OrderResponse createOrder(OrderCreationRequest request) {
@@ -122,10 +123,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     //TODO: Implement check role each field for update
     public OrderResponse updateOrder(Long orderId, OrderUpdateRequest request) {
+
+        //Get order in db to update
         Order orderExisting = orderRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
 
-
-        return null;
+        orderMapper.updateOrder(request, orderExisting);
+        orderRepository.save(orderExisting);
+        return orderMapper.toOrderResponse(orderExisting);
     }
 }
