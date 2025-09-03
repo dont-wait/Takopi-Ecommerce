@@ -43,13 +43,15 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse createOrder(OrderCreationRequest request) {
 
         User userExisting = userRepository.findByUserId(request.getUserId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+                .orElseThrow(()
+                        -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
 
         //Check product existed by id before save to Order with OrderDetails
         List<OrderDetail> details = request.getOrderDetails().stream()
                 .map(detailReq -> {
                     Product existingProduct = productRepository
-                            .findById(detailReq.getProductId())
+                            .findById(detailReq
+                                    .getProductId())
                             .orElseThrow(()
                                     -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
@@ -65,7 +67,6 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.toOrderResponse(orderRepository.save(newOrder));
     }
-
     @Override
     public OrderResponse getOrderById(Long orderId) {
         Order existingOrder = orderRepository.findByOrderId(orderId)
@@ -129,7 +130,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Long orderId) {
         Order existingORder = orderRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+                .orElseThrow(()
+                        -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
         existingORder.setActive(0);
         orderRepository.save(existingORder);
     }
@@ -140,7 +142,8 @@ public class OrderServiceImpl implements OrderService {
 
         //Get order in db to update
         Order orderExisting = orderRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+                .orElseThrow(()
+                        -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
 
 
         //Update order details
@@ -158,8 +161,7 @@ public class OrderServiceImpl implements OrderService {
         }
         //Update order field
         orderMapper.updateOrder(request, orderExisting);
-
-        orderRepository.save(orderExisting);
-        return orderMapper.toOrderResponse(orderExisting);
+        return orderMapper.toOrderResponse(orderRepository
+                .save(orderExisting));
     }
 }
