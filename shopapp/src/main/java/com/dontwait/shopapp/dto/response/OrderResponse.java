@@ -35,6 +35,8 @@ public class OrderResponse {
 
     String shippingAddress;
 
+    String orderStatus;
+
     String paymentMethod;
 
     LocalDateTime createdAt;

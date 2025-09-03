@@ -28,10 +28,11 @@ public class OrderCreationRequest {
     @Email(message = "EMAIL_INVALID")
     String orderEmail;
 
-    @NotBlank(message = "Phone number is required")
+    @NotBlank(message = "PHONE_NUMBER_CANT_BLANK")
     @Size(min = 10, message = "PHONE_NUMBER_MUST_BE_10_DIGIT")
     String orderPhoneNumber;
 
+    @NotBlank(message = "ADDRESS_CANT_BLANK")
     String address;
 
     String note;

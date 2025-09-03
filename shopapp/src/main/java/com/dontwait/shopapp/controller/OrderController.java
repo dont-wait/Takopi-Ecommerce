@@ -42,7 +42,6 @@ public class OrderController {
     }
 
     //VIP
-    //TODO: handle Status
     @GetMapping("/search")
     public ApiResponse<List<OrderResponse>> getOrders(
             @RequestParam(name= "page", defaultValue = "0") Integer page,
@@ -64,9 +63,10 @@ public class OrderController {
 
 
     @PutMapping("/{orderId}")
-    public ApiResponse<String> updateOrder(@Valid @PathVariable Long orderId,
+    public ApiResponse<OrderResponse> updateOrder(@Valid @PathVariable Long orderId,
                                            @RequestBody OrderUpdateRequest request) {
-        return ApiResponse.<String>builder()
+        return ApiResponse.<OrderResponse>builder()
+                .result(orderService.updateOrder(orderId, request))
                 .message("Update successfully")
                 .build();
     }

@@ -1,5 +1,7 @@
 package com.dontwait.shopapp.dto.request.order;
 
+import com.dontwait.shopapp.dto.request.order_detail.OrderDetailUpdateRequest;
+import com.dontwait.shopapp.entity.OrderDetail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,10 +26,11 @@ public class OrderUpdateRequest {
     @Email(message = "EMAIL_INVALID")
     String orderEmail;
 
-    @NotBlank(message = "Phone number is required")
+    @NotBlank(message = "PHONE_NUMBER_CANT_BLANK")
     @Size(min = 10, message = "PHONE_NUMBER_MUST_BE_10_DIGIT")
     String orderPhoneNumber;
 
+    @NotBlank(message = "ADDRESS_CANT_BLANK")
     String address;
 
     String note;
@@ -39,4 +43,6 @@ public class OrderUpdateRequest {
     String shippingAddress;
 
     String paymentMethod;
+
+    List<OrderDetailUpdateRequest> orderDetails;
 }

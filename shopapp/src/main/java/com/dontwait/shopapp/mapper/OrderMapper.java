@@ -1,17 +1,16 @@
 package com.dontwait.shopapp.mapper;
 
 import com.dontwait.shopapp.dto.request.order.OrderCreationRequest;
+import com.dontwait.shopapp.dto.request.order.OrderUpdateRequest;
 import com.dontwait.shopapp.dto.request.order_detail.OrderDetailCreationRequest;
+import com.dontwait.shopapp.dto.request.order_detail.OrderDetailUpdateRequest;
 import com.dontwait.shopapp.dto.response.OrderDetailResponse;
 import com.dontwait.shopapp.dto.response.OrderResponse;
 import com.dontwait.shopapp.entity.Order;
 import com.dontwait.shopapp.entity.OrderDetail;
 import com.dontwait.shopapp.entity.Product;
 import com.dontwait.shopapp.entity.User;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -24,6 +23,11 @@ public interface OrderMapper {
 
     @Mapping(target = "productName", source = "product.productName")
     OrderDetailResponse toOrderDetailResponse(OrderDetail orderDetail);
+
+    //Update Order
+    void updateOrder(OrderUpdateRequest request, @MappingTarget Order order);
+
+    void updateOrderDetail(OrderDetailUpdateRequest request, @MappingTarget OrderDetail orderDetail);
 
     @AfterMapping
     default void linkOrderDetails(@MappingTarget Order order) {

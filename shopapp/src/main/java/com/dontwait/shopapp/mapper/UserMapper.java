@@ -16,8 +16,6 @@ public interface UserMapper {
     @Mapping(target = "isActive", constant = "1")
     User toUser(UserRegisterRequest request, Role role);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    ignoreByDefault = true)
     @Mapping(target = "role")
     void updateUser(UserUpdateRequest request, @MappingTarget User user, Role role);
 }

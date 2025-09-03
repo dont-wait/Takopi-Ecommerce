@@ -15,9 +15,6 @@ public interface ProductMapper {
     @Mapping(target = "productCategory", source = "category.categoryName")
     ProductResponse toProductResponse(Product product);
 
-    @BeanMapping(ignoreByDefault = true,
-    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-    )
     @Mapping(target = "category")
     void updateProduct(ProductUpdateRequest request, @MappingTarget Product product, Category category);
 }

@@ -98,18 +98,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
-        User user = userRepository.findByUserId(userId)
+        User existingUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
-        if(userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+
+
+        //Check Update Phone
+        String oldPhoneNumber = existingUser.getPhoneNumber();
+        String newPhoneNumber = request.getPhoneNumber();
+
+        if(!oldPhoneNumber.equals(newPhoneNumber)) {
+            if(userRepository.existsByPhoneNumber(newPhoneNumber))
+                throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
         }
+
         Role role = roleRepository.findByRoleId(request.getRoleId()).
                 orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
 
-        userMapper.updateUser(request, user, role);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userMapper.updateUser(request, existingUser, role);
+        existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        userRepository.save(existingUser);
+        return userMapper.toUserResponse(existingUser);
     }
 }
