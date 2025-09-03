@@ -2,6 +2,7 @@ package com.dontwait.shopapp.service.impl;
 
 import com.dontwait.shopapp.dto.request.order.OrderCreationRequest;
 import com.dontwait.shopapp.dto.request.order.OrderUpdateRequest;
+import com.dontwait.shopapp.dto.request.order_detail.OrderDetailUpdateRequest;
 import com.dontwait.shopapp.dto.response.OrderResponse;
 import com.dontwait.shopapp.entity.*;
 import com.dontwait.shopapp.enums.ErrorCode;
@@ -47,8 +48,10 @@ public class OrderServiceImpl implements OrderService {
         //Check product existed by id before save to Order with OrderDetails
         List<OrderDetail> details = request.getOrderDetails().stream()
                 .map(detailReq -> {
-                    Product existingProduct = productRepository.findById(detailReq.getProductId())
-                            .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+                    Product existingProduct = productRepository
+                            .findById(detailReq.getProductId())
+                            .orElseThrow(()
+                                    -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
                     return orderMapper.toOrderDetail(detailReq, existingProduct);
                 })
@@ -79,24 +82,35 @@ public class OrderServiceImpl implements OrderService {
                                          String keyword) {
         Specification<Order> spec = Specification.where(null);
         if(userId != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("user").get("userId"), userId));
+            spec = spec.and((root, query, cb)
+                    -> cb.equal(root.get("user").get("userId"), userId));
         }
 
         if(status != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+            spec = spec.and((root, query, cb)
+                    -> cb.equal(root.get("status"), status));
         }
 
         if (keyword != null && !keyword.isEmpty()) {
             spec = spec.and((root, query, cb) -> {
                 List<Predicate> keyWordPredicates = new ArrayList<>();
                 // filter trên trường của Order
-                keyWordPredicates.add(cb.like(root.get("orderFullName"), "%" + keyword + "%"));
-                keyWordPredicates.add(cb.like(root.get("trackingNumber"), "%" + keyword + "%"));
+                keyWordPredicates.add(
+                        cb.like(root.get("orderFullName"), "%" + keyword + "%")
+                );
+                keyWordPredicates.add(
+                        cb.like(root.get("trackingNumber"), "%" + keyword + "%")
+                );
 
                 // join đến OrderDetail và Product để filter productName
-                Join<Order, OrderDetail> detailJoin = root.join("orderDetails", JoinType.LEFT);
-                Join<OrderDetail, Product> productJoin = detailJoin.join("product", JoinType.LEFT);
-                keyWordPredicates.add(cb.like(productJoin.get("productName"), "%" + keyword + "%"));
+                Join<Order, OrderDetail> detailJoin = root
+                        .join("orderDetails", JoinType.LEFT);
+                Join<OrderDetail, Product> productJoin = detailJoin
+                        .join("product", JoinType.LEFT);
+                keyWordPredicates
+                        .add(cb.like(productJoin
+                                .get("productName"), "%" + keyword + "%")
+                        );
 
                 // combine tất cả điều kiện bằng OR
                 return cb.or(keyWordPredicates.toArray(new Predicate[0]));
@@ -128,7 +142,23 @@ public class OrderServiceImpl implements OrderService {
         Order orderExisting = orderRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
 
+
+        //Update order details
+        if(request.getOrderDetails() != null) {
+            for(OrderDetailUpdateRequest req : request.getOrderDetails()) {
+                OrderDetail orderDetailExisting = orderDetailRepository
+                        .findByOrderDetailId(req.getOrderDetailId())
+                        .orElseThrow(()
+                                -> new AppException(ErrorCode.ORDER_DETAIL_ID_NOT_FOUND));
+
+                orderMapper.updateOrderDetail(req, orderDetailExisting);
+                orderDetailRepository.save(orderDetailExisting);
+            }
+
+        }
+        //Update order field
         orderMapper.updateOrder(request, orderExisting);
+
         orderRepository.save(orderExisting);
         return orderMapper.toOrderResponse(orderExisting);
     }

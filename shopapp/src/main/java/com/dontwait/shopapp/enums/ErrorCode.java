@@ -26,6 +26,7 @@ public enum ErrorCode {
     FULLNAME_CANT_BLANK(1002, "Full name can't blank", HttpStatus.BAD_REQUEST),
     USERNAME_CANT_BLANK(1002, "Username can't blank", HttpStatus.BAD_REQUEST),
 
+    ADDRESS_CANT_BLANK(1002, "Address can't blank", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_CANT_BLANK(1002, "Phone number can't blank", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_MUST_BE_10_DIGIT(1002, "Phone number must be 10 digit", HttpStatus.BAD_REQUEST),
     EMAIL_INVALID(1002, "Email is invalid", HttpStatus.BAD_REQUEST),
@@ -40,6 +41,7 @@ public enum ErrorCode {
 
     CATEGORY_NAME_EXISTED(1003, "Category name existed", HttpStatus.CONFLICT),
 
+    ORDER_DETAIL_ID_NOT_FOUND(1004, "Order detail id not found", HttpStatus.NOT_FOUND),
     PRODUCT_ID_NOT_FOUND(1004, "Product id not found", HttpStatus.NOT_FOUND),
     ORDER_ID_NOT_FOUND(1004, "Order id not found", HttpStatus.NOT_FOUND),
     FULLNAME_NOT_FOUND(1004, "Full name not found", HttpStatus.NOT_FOUND),

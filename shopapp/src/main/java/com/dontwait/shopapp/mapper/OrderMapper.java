@@ -25,14 +25,8 @@ public interface OrderMapper {
     OrderDetailResponse toOrderDetailResponse(OrderDetail orderDetail);
 
     //Update Order
-    @BeanMapping(ignoreByDefault = true,
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-    )
     void updateOrder(OrderUpdateRequest request, @MappingTarget Order order);
 
-    @BeanMapping(ignoreByDefault = true,
-            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-    )
     void updateOrderDetail(OrderDetailUpdateRequest request, @MappingTarget OrderDetail orderDetail);
 
     @AfterMapping

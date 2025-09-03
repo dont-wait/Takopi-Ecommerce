@@ -14,6 +14,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailUpdateRequest {
+
+    Long orderDetailId;
+
+    Long productId;;
+
     @Min(value = 0, message = "PRODUCT_PRICE_MUST_BE_GREATER_THAN_0")
     BigDecimal price;
     @Min(value = 1, message = "PRODUCT_NUMBER_MUST_BE_GREATER_THAN_1")
