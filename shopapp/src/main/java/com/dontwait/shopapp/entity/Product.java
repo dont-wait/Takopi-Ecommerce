@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "products")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@ToString
 public class Product extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
