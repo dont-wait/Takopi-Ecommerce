@@ -63,8 +63,8 @@ public class OrderController {
 
 
     @PutMapping("/{orderId}")
-    public ApiResponse<OrderResponse> updateOrder(@Valid @PathVariable Long orderId,
-                                           @RequestBody OrderUpdateRequest request) {
+    public ApiResponse<OrderResponse> updateOrder(@PathVariable Long orderId,
+                                                  @Valid @RequestBody OrderUpdateRequest request) {
         return ApiResponse.<OrderResponse>builder()
                 .result(orderService.updateOrder(orderId, request))
                 .message("Update successfully")

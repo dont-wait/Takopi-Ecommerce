@@ -21,6 +21,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderUpdateRequest {
 
+    @NotBlank(message = "FULL_NAME_CANT_BLANK")
     String orderFullName;
 
     @Email(message = "EMAIL_INVALID")
