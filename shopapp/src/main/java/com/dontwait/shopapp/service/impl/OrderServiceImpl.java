@@ -52,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
                     Product existingProduct = productRepository
                             .findById(detailReq
                                     .getProductId())
+                            .findById(detailReq.getProductId())
                             .orElseThrow(()
                                     -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
 
@@ -148,12 +149,10 @@ public class OrderServiceImpl implements OrderService {
 
         //Update order details
         List<OrderDetail> details = new ArrayList<>();
-        if(request.getOrderDetails() != null) {
-            for(OrderDetailUpdateRequest req : request.getOrderDetails()) {
-                OrderDetail orderDetailExisting = orderDetailRepository
-                        .findByOrderDetailId(req.getOrderDetailId())
-                        .orElseThrow(()
-                                -> new AppException(ErrorCode.ORDER_DETAIL_ID_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
+
+
+ 
 
                 Product existingProduct = productRepository.findByProductId(req.getProductId())
                                 .orElseThrow(()
@@ -163,10 +162,7 @@ public class OrderServiceImpl implements OrderService {
 
                 orderDetailExisting.setProduct(existingProduct);
                 details.add(orderDetailExisting);
-                orderDetailRepository.save(orderDetailExisting);
-            }
-
-        }
+                orderMapper.updateOrderDetail(req, orderDetailExisting);
 
         //Update order field
         orderMapper.updateOrder(request, orderExisting);

@@ -46,6 +46,7 @@ public class OrderUpdateRequest {
 
     String paymentMethod;
 
+
     @Valid
     List<OrderDetailUpdateRequest> orderDetails;
 }
