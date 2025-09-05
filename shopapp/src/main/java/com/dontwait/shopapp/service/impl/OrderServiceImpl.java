@@ -129,11 +129,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long orderId) {
-        Order existingORder = orderRepository.findByOrderId(orderId)
+        Order existingOrder = orderRepository.findByOrderId(orderId)
                 .orElseThrow(()
                         -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
-        existingORder.setActive(0);
-        orderRepository.save(existingORder);
+        existingOrder.setActive(0);
+        orderRepository.save(existingOrder);
     }
 
     @Override
