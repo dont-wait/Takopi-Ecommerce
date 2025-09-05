@@ -2,6 +2,7 @@ package com.dontwait.shopapp.dto.request.order;
 
 import com.dontwait.shopapp.dto.request.order_detail.OrderDetailUpdateRequest;
 import com.dontwait.shopapp.entity.OrderDetail;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderUpdateRequest {
 
+    @NotBlank(message = "FULL_NAME_CANT_BLANK")
     String orderFullName;
 
     @Email(message = "EMAIL_INVALID")
@@ -35,7 +37,7 @@ public class OrderUpdateRequest {
 
     String note;
 
-    @Min(value = 0, message = "Total money must be >= 0")
+    @Min(value = 0, message = "PRODUCT_TOTAL_MONEY_MUST_BE_GREATER_THAN_0")
     BigDecimal totalMoney;
 
     String shippingMethod;
@@ -44,5 +46,6 @@ public class OrderUpdateRequest {
 
     String paymentMethod;
 
+    @Valid
     List<OrderDetailUpdateRequest> orderDetails;
 }

@@ -1,6 +1,7 @@
 package com.dontwait.shopapp.dto.request.order;
 
 import com.dontwait.shopapp.dto.request.order_detail.OrderDetailCreationRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class OrderCreationRequest {
     @Min(value = 1, message = "USER_ID_MUST_BE_GREATER_THAN_1")
     Long userId;
 
+    @NotBlank(message = "FULL_NAME_CANT_BLANK")
     String orderFullName;
 
     @Email(message = "EMAIL_INVALID")
@@ -37,7 +39,7 @@ public class OrderCreationRequest {
 
     String note;
 
-    @Min(value = 0, message = "Total money must be >= 0")
+    @Min(value = 0, message = "PRODUCT_TOTAL_MONEY_MUST_BE_GREATER_THAN_0")
     BigDecimal totalMoney;
 
     String shippingMethod;
@@ -46,6 +48,7 @@ public class OrderCreationRequest {
 
     String paymentMethod;
 
+    @Valid
     List<OrderDetailCreationRequest> orderDetails;
 
 }
